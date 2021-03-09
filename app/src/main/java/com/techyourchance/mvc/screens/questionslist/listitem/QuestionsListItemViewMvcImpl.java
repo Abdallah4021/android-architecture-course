@@ -1,4 +1,4 @@
-package com.techyourchance.mvc.screens.questionslist;
+package com.techyourchance.mvc.screens.questionslist.listitem;
 
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,10 +9,6 @@ import android.widget.TextView;
 import com.techyourchance.mvc.R;
 import com.techyourchance.mvc.questions.Question;
 import com.techyourchance.mvc.screens.common.BaseObservableViewMvc;
-import com.techyourchance.mvc.screens.common.BaseViewMvc;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuestionsListItemViewMvcImpl extends BaseObservableViewMvc<QuestionsListItemViewMvc.Listener>
         implements QuestionsListItemViewMvc {

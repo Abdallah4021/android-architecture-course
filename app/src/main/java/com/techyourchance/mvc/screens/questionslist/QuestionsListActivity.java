@@ -11,6 +11,8 @@ import com.techyourchance.mvc.networking.QuestionsListResponseSchema;
 import com.techyourchance.mvc.networking.StackoverflowApi;
 import com.techyourchance.mvc.questions.Question;
 import com.techyourchance.mvc.screens.common.BaseActivity;
+import com.techyourchance.mvc.screens.questionslist.view.QuestionsListViewMvc;
+import com.techyourchance.mvc.screens.questionslist.view.QuestionsListViewMvcImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class QuestionsListActivity extends BaseActivity implements QuestionsListViewMvcImpl.Listener {
+public class QuestionsListActivity extends BaseActivity implements QuestionsListViewMvc.Listener {
 
     private StackoverflowApi mStackoverflowApi;
 
@@ -30,7 +32,8 @@ public class QuestionsListActivity extends BaseActivity implements QuestionsList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        setContentView(R.layout.layout_questions_list);
+//        mLstQuestions = findViewById(R.id.lst_questions);
         mViewMvc = new QuestionsListViewMvcImpl(LayoutInflater.from(this), null);
         mViewMvc.registerListener(this);
 
@@ -49,6 +52,12 @@ public class QuestionsListActivity extends BaseActivity implements QuestionsList
         fetchQuestions();
     }
 
+    @Override
+    protected void onDestroy() {
+        mViewMvc.unregisterListener(this);
+        super.onDestroy();
+    }
+
     private void fetchQuestions() {
         mStackoverflowApi.fetchLastActiveQuestions(Constants.QUESTIONS_LIST_PAGE_SIZE)
                 .enqueue(new Callback<QuestionsListResponseSchema>() {
@@ -65,7 +74,7 @@ public class QuestionsListActivity extends BaseActivity implements QuestionsList
                     public void onFailure(Call<QuestionsListResponseSchema> call, Throwable t) {
                         networkCallFailed();
                     }
-                } );
+                });
     }
 
     private void bindQuestions(List<QuestionSchema> questionSchemas) {
